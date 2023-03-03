@@ -7,7 +7,7 @@
       row-key="id"
       :pagination="pagination"
       :loading="loading"
-      :filter="filter"
+      @update:pagination="(v) => buscar()"
     >
       <template v-slot:top>
         <div class="col-6 text-h5 text-primary">Personagens</div>
@@ -15,7 +15,8 @@
           <q-input
             placeholder="Pesquise pelo nome do personagem"
             v-model="filtro"
-            dense
+            @update:model-value="buscar()"
+            :debounce="400"
           >
             <template v-slot:append>
               <q-icon name="search" color="primary" />
@@ -31,7 +32,12 @@
         </q-tr>
       </template>
       <template v-slot:body="props">
-        <q-tr :props="props">
+        <q-tr
+          :props="props"
+          clickable
+          @click="detalhesPersonagem(props.row.id)"
+          class="cursor-pointer"
+        >
           <td>
             <q-img :src="props.row.image"></q-img>
           </td>
@@ -60,21 +66,41 @@ export default defineComponent({
         sortBy: "desc",
         descending: false,
         page: 1,
-        rowsPerPage: 20,
+        rowsPerPage: 10,
+        rowsNumber: 0,
       },
-      page: 2,
+      loading: false,
+      filtro: "",
     };
   },
-  async created() {
-    let resposta = await this.$axios.request({
-      url: `https://rickandmortyapi.com/api/character/?page=${this.page}`,
-      method: "get",
-    });
-    if (resposta.status == 200) {
-      console.log(resposta);
-      this.personagens = resposta.data.results;
-    }
-    //console.log(this.personagens);
+  methods: {
+    async buscar(props) {
+      this.loading = true;
+      if (props) {
+        this.pagination.page = props.pagination.page;
+        this.pagination.rowsPerPage = props.pagination.rowsPerPage;
+        this.pagination.sortBy = props.pagination.sortBy;
+        this.pagination.descending = props.pagination.descending;
+      }
+      let data = {
+        name: this.filtro,
+        ...this.pagination,
+      };
+      let resposta = await this.$axios.request({
+        url: `https://rickandmortyapi.com/api/character/`,
+        method: "get",
+        params: data,
+      });
+      if (resposta.status === 200) {
+        this.pagination.rowsNumber = parseInt(resposta.data.info.pages);
+        this.personagens = resposta.data.results;
+      }
+      this.loading = false;
+    },
+    detalhesPersonagem(id) {
+      console.log(id);
+      this.$router.push("/DetalhesPersonagem/" + id);
+    },
   },
 });
 </script>
