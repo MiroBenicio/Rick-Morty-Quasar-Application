@@ -1,7 +1,7 @@
 <template>
   <q-layout>
     <q-page-container>
-      <q-page class="q-pa-md flex flex-center row items-start q-gutter-md">
+      <q-page class="q-pa-md flex flex-center row q-gutter-md">
         <q-card class="my-card shadow-5">
           <q-card-section>
             <div class="text-center text-bold text-h5">
@@ -37,11 +37,15 @@
         <q-card class="my-card shadow-5">
           <q-card-section>
             <div class="text-center text-h5">
-              Quantidade de episódios: {{ episodios }}
+              Quantidade de Aparições: {{ episodios }}
             </div>
           </q-card-section>
           <q-card-section>
-            <div class="text-center text-h6">Lista de Episódios</div>
+            <q-list dense bordered padding class="rounded-borders row">
+              <q-item v-for="episode of personagem.episode" :key="episode">
+                {{ episode }}
+              </q-item>
+            </q-list>
           </q-card-section>
         </q-card>
       </q-page>
@@ -82,4 +86,5 @@ export default defineComponent({
 <style lang="sass" scoped>
 .my-card
     border: 1px solid gray
+    max-width: 70vw
 </style>

@@ -98,7 +98,6 @@ export default defineComponent({
       this.loading = false;
     },
     detalhesPersonagem(id) {
-      console.log(id);
       this.$router.push("/DetalhesPersonagem/" + id);
     },
   },
