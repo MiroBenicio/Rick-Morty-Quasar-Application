@@ -33,19 +33,24 @@
               {{ planeta.atual }}
             </div>
           </q-card-section>
-        </q-card>
-        <q-card class="my-card shadow-5">
           <q-card-section>
-            <div class="text-center text-h5">
+            <div class="text-left text-h6">
               Quantidade de Aparições: {{ episodios }}
             </div>
           </q-card-section>
           <q-card-section>
-            <q-list dense bordered padding class="rounded-borders row">
-              <q-item v-for="episode of personagem.episode" :key="episode">
-                {{ episode }}
-              </q-item>
-            </q-list>
+            <q-expansion-item expand-separator label="Lista dos Episódios">
+              <q-list dense bordered padding class="rounded-borders">
+                <q-item v-for="episode of personagem.episode" :key="episode">
+                  {{
+                    episode.replace(
+                      "https://rickandmortyapi.com/api/episode/",
+                      "Episódio: "
+                    )
+                  }}
+                </q-item>
+              </q-list>
+            </q-expansion-item>
           </q-card-section>
         </q-card>
       </q-page>
