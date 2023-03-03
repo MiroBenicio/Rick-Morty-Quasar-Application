@@ -1,7 +1,7 @@
 <template>
   <q-layout>
     <q-page-container>
-      <q-page class="q-pa-md flex flex-center row q-gutter-md">
+      <q-page class="q-pa-sm q-ma-sm flex flex-center row q-gutter-md">
         <q-card class="my-card shadow-5">
           <q-card-section>
             <div class="text-center text-bold text-h5">
@@ -91,5 +91,4 @@ export default defineComponent({
 <style lang="sass" scoped>
 .my-card
     border: 1px solid gray
-    max-width: 70vw
 </style>
